@@ -1,3 +1,22 @@
+function iterateObject(data) {
+  if (Array.isArray(data)) {
+      data.forEach(item => {
+          addLabel(item);
+          for (let key in item) {
+              if (typeof item[key] === 'object') {
+                iterateObject(item[key]);
+              }
+          }
+      });
+  } else if (typeof data === 'object') {
+      addLabel(data);
+      for (let key in data) {
+          if (typeof data[key] === 'object') {
+            iterateObject(data[key]);
+          }
+      }
+  }
+}
 function addLabel(obj) {
   const { name } = obj;
   if (!name) {
@@ -12,34 +31,17 @@ function addLabel(obj) {
       obj.label = name
           .split('_')
           .map(item => item
-              .replace(/[A-Z]/g, (match) => ' ' + match.toLowerCase())
-              .replace(exceptions, (match) => match.toUpperCase()))
+              .replace(/[A-Z]/g, match => ' ' + match.toLowerCase())
+              .replace(exceptions, match => match.toUpperCase()))
           .join(' ');
 
-      obj.label = obj.label[0].toUpperCase() + obj.label.slice(1);
+      obj.label = capitalizeFirstLetter(obj.label);
   }
   
   return obj;
-}   
-
-function iterateObj(data) {
-  if (Array.isArray(data)) {
-      data.forEach(item => {
-          addLabel(item);
-          for (let key in item) {
-              if (typeof item[key] === 'object') {
-                iterateObj(item[key]);
-              }
-          }
-      });
-  } else if (typeof data === 'object') {
-      addLabel(data);
-      for (let key in data) {
-          if (typeof data[key] === 'object') {
-            iterateObj(data[key]);
-          }
-      }
-  }
+}
+function capitalizeFirstLetter(string) {
+  return string[0].toUpperCase() + string.slice(1);
 }
 
 const
@@ -50,7 +52,7 @@ input.focus();
 
 input.addEventListener('input', (e) => {
   const obj = JSON.parse(e.target.value);
-  iterateObj(obj);
+  iterateObject(obj);
 
   output.value = JSON.stringify(obj, null, 4);
   output.select();
