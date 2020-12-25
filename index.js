@@ -44,6 +44,8 @@ function addLabel(obj) {
   obj.label = name
     .split('_')
     .map(word => word.replace(/[A-Z]/g, match => ' ' + match))
+    .map(word => word.replace(/\D\d/g, match => `${match[0]} ${match[1]}`))
+    .map(word => word.replace(/\d\D/g, match => `${match[0]} ${match[1]}`))
     .join(' ')
     .trim()
     .split(' ')
