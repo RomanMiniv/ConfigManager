@@ -44,6 +44,10 @@ function addLabel(obj) {
   const delimiter = guessDelimiter(obj.name);
   let splitName = name.split(delimiter);
   if (!delimiter) {
+    if (isAcronym(splitName[0])) {
+      obj.label = splitName[0];
+      return obj;
+    };
     splitName = splitName
       .map(word => word.replace(/[A-Z]/g, match => ' ' + match));
   } else {
@@ -82,6 +86,9 @@ function guessDelimiter(word) {
 }
 function isUppercase(word) {
   return word.split('').map(w => w.toUpperCase()).join('') === word;
+}
+function isAcronym(word) {
+  return acronyms.includes(word.toUpperCase());
 }
 function modifyWordForLabel(word) {
   if (articles.includes(word.toLowerCase())) {
