@@ -40,19 +40,42 @@ function addLabel(obj) {
   if (!name) {
       return obj;
   }
-  
-  obj.label = name
-    .split('_')
+
+  const delimiter = guessDelimiter(obj.name);
+  const splitName = name.split(delimiter);
+  const label = splitName
+    .map(word => word.toLowerCase())
     .map(word => word.replace(/[A-Z]/g, match => ' ' + match))
     .map(word => word.replace(/\D\d/g, match => `${match[0]} ${match[1]}`))
     .map(word => word.replace(/\d\D/g, match => `${match[0]} ${match[1]}`))
     .join(' ')
     .trim()
     .split(' ')
-    .map(word => modifyWordForLabel(word))
+    .map((word, index) => {
+      const resultWord = isUppercase(splitName[index]) ? word.toUpperCase() : word;
+      word = modifyWordForLabel(resultWord);
+      return word;
+    })
     .join(' ');
 
+  obj.label = label;
   return obj;
+}
+function guessDelimiter(word) {
+  const delimiters = ['_', '-', ' '];
+  let maxAmount = 0;
+  let currentDelimiter = '_';
+  delimiters.forEach((del) => {
+    const { length } = word.split(del);
+    if (length > maxAmount) {
+      maxAmount = length;
+      currentDelimiter = del;
+    }
+  });
+  return currentDelimiter;
+}
+function isUppercase(word) {
+  return word.split('').map(w => w.toUpperCase()).join('') === word;
 }
 function modifyWordForLabel(word) {
   if (articles.includes(word.toLowerCase())) {
