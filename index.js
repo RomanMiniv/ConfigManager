@@ -18,43 +18,49 @@ const
 
 function iterateObject(data) {
   if (Array.isArray(data)) {
-      data.forEach(item => {
-          addLabel(item);
-          for (let key in item) {
-              if (typeof item[key] === 'object') {
-                iterateObject(item[key]);
-              }
-          }
-      });
-  } else if (typeof data === 'object') {
-      addLabel(data);
-      for (let key in data) {
-          if (typeof data[key] === 'object') {
-            iterateObject(data[key]);
-          }
+    data.forEach(item => {
+      addLabel(item);
+      for (let key in item) {
+        if (typeof item[key] === 'object') {
+          iterateObject(item[key]);
+        }
       }
+    });
+  } else if (typeof data === 'object') {
+    addLabel(data);
+    for (let key in data) {
+      if (typeof data[key] === 'object') {
+        iterateObject(data[key]);
+      }
+    }
   }
 }
 function addLabel(obj) {
   const { name } = obj;
   if (!name) {
-      return obj;
+    return obj;
   }
 
   const delimiter = guessDelimiter(obj.name);
-  const splitName = name.split(delimiter);
+  let splitName = name.split(delimiter);
+  if (!delimiter) {
+    splitName = splitName
+      .map(word => word.replace(/[A-Z]/g, match => ' ' + match));
+  } else {
+    splitName = splitName
+      .map(word => word.toLowerCase());
+  }
   const label = splitName
-    .map(word => word.toLowerCase())
-    .map(word => word.replace(/[A-Z]/g, match => ' ' + match))
     .map(word => word.replace(/\D\d/g, match => `${match[0]} ${match[1]}`))
     .map(word => word.replace(/\d\D/g, match => `${match[0]} ${match[1]}`))
     .join(' ')
     .trim()
     .split(' ')
     .map((word, index) => {
-      const resultWord = isUppercase(splitName[index]) ? word.toUpperCase() : word;
-      word = modifyWordForLabel(resultWord);
-      return word;
+      const resultWord = delimiter
+        ? (isUppercase(splitName[index]) ? word.toUpperCase() : word)
+        : word;
+      return modifyWordForLabel(resultWord);
     })
     .join(' ');
 
@@ -72,7 +78,7 @@ function guessDelimiter(word) {
       currentDelimiter = del;
     }
   });
-  return currentDelimiter;
+  return maxAmount === 1 ? null : currentDelimiter;
 }
 function isUppercase(word) {
   return word.split('').map(w => w.toUpperCase()).join('') === word;
