@@ -13,8 +13,8 @@ input.addEventListener('input', (e) => {
 });
 
 const
-  acronyms = ['ID', 'URL', 'JSON', 'HTML', 'PDF', 'IP', 'SMS', 'ISO', 'ZIP', 'AMP', 'ISP', 'OS', 'IOS', 'UTM', 'GDPR', 'API', 'VAT', 'IVR', 'MRR', 'PO'],
-  articles = ['at', 'by', 'to', 'on', 'in', 'of', 'for', 'from', 'or', 'via'];
+  acronyms = ['ID', 'URL', 'JSON', 'HTML', 'PDF', 'IP', 'SMS', 'ISO', 'ZIP', 'AMP', 'ISP', 'OS', 'IOS', 'UTM', 'UTC', 'GDPR', 'API', 'VAT', 'IVR', 'MRR', 'PO'],
+  articles = ['at', 'by', 'to', 'on', 'in', 'of', 'for', 'from', 'or', 'via', 'be', 'is'];
 
 function iterateObject(data) {
   if (Array.isArray(data)) {
