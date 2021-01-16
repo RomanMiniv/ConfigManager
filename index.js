@@ -49,14 +49,17 @@ function addLabel(obj) {
     .join(' ')
     .trim()
     .split(' ')
-    .map(word => modifyWordForLabel(word))
+    .map((word, index) => modifyWordForLabel(word, index))
     .join(' ');
 
   return obj;
 }
-function modifyWordForLabel(word) {
+function modifyWordForLabel(word, index) {
   if (articles.includes(word.toLowerCase())) {
-    return word.toLowerCase();
+    if (index) {
+      return word.toLowerCase();
+    }
+    return capitalizeFirstLetter(word);
   } else if (acronyms.includes(word.toUpperCase())) {
     return word.toUpperCase();
   } else {
