@@ -13,7 +13,7 @@ input.addEventListener('input', (e) => {
 });
 
 const
-  acronyms = ['ID', 'URL', 'JSON', 'HTML', 'PDF', 'IP', 'SMS', 'ISO', 'ZIP', 'AMP', 'ISP', 'OS', 'IOS', 'UTM', 'UTC', 'GDPR', 'API', 'VAT', 'IVR', 'MRR', 'PO', 'BCC', 'UBL', 'CSS', 'JS', 'CC'],
+  acronyms = ['ID', 'URL', 'JSON', 'HTML', 'HTML5', 'PDF', 'IP', 'SMS', 'ISO', 'ZIP', 'AMP', 'ISP', 'OS', 'IOS', 'UTM', 'UTC', 'GDPR', 'API', 'VAT', 'IVR', 'MRR', 'PO', 'BCC', 'UBL', 'CSS', 'JS', 'CC'],
   articles = ['at', 'by', 'to', 'on', 'in', 'of', 'for', 'from', 'or', 'via', 'be', 'is', 'with'];
 
 function iterateObject(data) {
@@ -44,8 +44,6 @@ function addLabel(obj) {
   obj.label = name
     .split('_')
     .map(word => word.replace(/[A-Z]/g, match => ' ' + match))
-    .map(word => word.replace(/\D\d/g, match => `${match[0]} ${match[1]}`))
-    .map(word => word.replace(/\d\D/g, match => `${match[0]} ${match[1]}`))
     .join(' ')
     .trim()
     .split(' ')
